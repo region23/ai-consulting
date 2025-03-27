@@ -3,14 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>ИИ-ассистенты для разработки — консалтинг от экспертов</title>
     <style>
         :root {
             --bg-color: #f9fafb;
             --primary-color: #68b4d0;
             --secondary-color: #1f2937;
-            --accent-color: #58b1d1;
+            --accent-color: #3ca2c7;
             --text-color: #374151;
             --card-bg: #ffffff;
             --radius: 16px;
@@ -20,11 +21,22 @@
             box-sizing: border-box;
         }
 
+        html,
+        body {
+            overflow-x: hidden;
+            position: relative;
+            height: 100%;
+            width: 100%;
+            touch-action: pan-y;
+            -webkit-overflow-scrolling: touch;
+        }
+
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-color);
             color: var(--text-color);
+            overscroll-behavior-y: none;
         }
 
         header {
@@ -33,6 +45,39 @@
             padding: 4rem 2rem 2rem;
             text-align: center;
             position: relative;
+            overflow: hidden;
+            /* Предотвращаем выход псевдоэлемента за границы */
+        }
+
+        /* Добавляем фоновый паттерн через псевдоэлемент */
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.15;
+            /* Увеличиваем непрозрачность с 0.07 до 0.15 */
+            z-index: 0;
+            background-image:
+                /* Сетка кода - более заметная */
+                repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0px, rgba(255, 255, 255, 0.15) 2px, transparent 2px, transparent 25px),
+                repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.15) 0px, rgba(255, 255, 255, 0.15) 2px, transparent 2px, transparent 25px),
+                /* Стилизованные точки данных, напоминающие нейросеть */
+                radial-gradient(circle at 10% 20%, rgba(0, 210, 255, 0.3) 0%, transparent 20%),
+                radial-gradient(circle at 85% 30%, rgba(100, 220, 255, 0.25) 0%, transparent 25%),
+                radial-gradient(circle at 30% 75%, rgba(255, 255, 255, 0.2) 0%, transparent 15%),
+                /* Добавляем символы кода и фрагменты двоичного кода */
+                repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0px, rgba(255, 255, 255, 0.1) 1px, transparent 1px, transparent 15px);
+            pointer-events: none;
+            /* Чтобы фон не блокировал взаимодействие с контентом */
+        }
+
+        /* Убедимся, что весь контент в header находится над паттерном */
+        header * {
+            position: relative;
+            z-index: 1;
         }
 
         header h1 {
@@ -119,6 +164,70 @@
             font-size: 0.9rem;
             color: #6b7280;
         }
+
+        /* Медиа-запросы для мобильных устройств */
+        @media screen and (max-width: 768px) {
+            header {
+                padding: 2.5rem 1rem 1.5rem;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            header p {
+                font-size: 1rem;
+                padding: 0 0.5rem;
+            }
+
+            .slogan {
+                font-size: 1.2rem;
+            }
+
+            section {
+                padding: 1.5rem;
+                margin: 1.5rem 1rem;
+                border-radius: 12px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            p,
+            li {
+                font-size: 0.95rem;
+            }
+
+            .cta {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .illustration {
+                margin-top: 1.5rem;
+            }
+        }
+
+        /* Дополнительные стили для совсем маленьких экранов */
+        @media screen and (max-width: 480px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            section {
+                padding: 1.25rem;
+                margin: 1rem 0.75rem;
+            }
+
+            .cta {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.95rem;
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
@@ -166,6 +275,26 @@
     <footer>
         <p>© 2025 Be digital. Stay human.</p>
     </footer>
+
+    <!-- Добавляем скрипт для предотвращения масштабирования через жесты -->
+    <script>
+        // Предотвращение масштабирования жестами
+        document.addEventListener('touchmove', function (event) {
+            if (event.scale !== 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        // Предотвращение двойного тапа для увеличения
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
 </body>
 
 </html>
